@@ -1,0 +1,3 @@
+{% extends "level2" %}
+{% block block5 %}block 5 from level3{% endblock %}
+{% block block4 %}block 4 from level3{% endblock %}

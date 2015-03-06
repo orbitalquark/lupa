@@ -1,0 +1,1 @@
+{% extends master or 'master1' %}{% block x %}CHILD{% endblock %}

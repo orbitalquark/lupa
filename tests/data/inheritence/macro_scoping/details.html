@@ -1,0 +1,14 @@
+        {% extends 'standard.html' %}
+
+        {% macro my_macro() %}
+        my_macro
+        {% endmacro %}
+
+        {% block content %}
+            {% block outer_box %}
+                outer_box
+                {% block inner_box %}
+                    inner_box
+                {% endblock %}
+            {% endblock %}
+        {% endblock %}

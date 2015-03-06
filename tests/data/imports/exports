@@ -1,0 +1,7 @@
+
+            {% macro toplevel() %}...{% endmacro %}
+            {% macro __private() %}...{% endmacro %}
+            {% set variable = 42 %}
+            {% for item in {1} %}
+                {% macro notthere() %}{% endmacro %}
+            {% endfor %}

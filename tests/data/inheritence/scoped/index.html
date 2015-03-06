@@ -1,0 +1,10 @@
+
+            {%- extends 'layout.html' %}
+            {% include 'helpers.html' %}
+            {% block useless %}
+                {% for x in {1, 2, 3} %}
+                    {% block testing %}
+                        {{ foo(x) }}
+                    {% endblock %}
+                {% endfor %}
+            {% endblock %}

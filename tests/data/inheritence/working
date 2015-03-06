@@ -1,0 +1,8 @@
+{% extends "layout" %}
+{% block block1 %}
+  {% if false %}
+    {% block block2 %}
+      this should workd
+    {% endblock %}
+  {% endif %}
+{% endblock %}

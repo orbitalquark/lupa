@@ -1,0 +1,2 @@
+{% extends "layout" %}
+{% block block1 %}block 1 from level1{% endblock %}

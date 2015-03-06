@@ -1,0 +1,5 @@
+|{% block block1 %}block 1 from layout{% endblock %}
+|{% block block2 %}block 2 from layout{% endblock %}
+|{% block block3 %}
+{% block block4 %}nested block 4 from layout{% endblock %}
+{% endblock %}|

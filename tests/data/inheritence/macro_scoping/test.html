@@ -1,0 +1,9 @@
+        {% extends 'details.html' %}
+
+        {% macro my_macro() %}
+        my_macro
+        {% endmacro %}
+
+        {% block inner_box %}
+            {{ my_macro() }}
+        {% endblock %}
