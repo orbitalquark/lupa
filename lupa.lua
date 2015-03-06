@@ -918,6 +918,7 @@ end
 -- Capitalizes string *s*.
 -- The first character will be uppercased, the others lowercased.
 -- @param s The string to capitalize.
+-- @usage expand('{{ "foo bar"|capitalize }}') --> Foo bar
 -- @name filters.capitalize
 function M.filters.capitalize(s)
   assert(s, 'input to filter "capitalize" was nil instead of a string')
@@ -929,6 +930,7 @@ end
 -- Centers string *s* within a string of length *width*.
 -- @param s The string to center.
 -- @param width The length of the centered string.
+-- @usage expand('{{ "foo"|center(9) }}') --> "   foo   "
 -- @name filters.center
 function M.filters.center(s, width)
   assert(s, 'input to filter "center" was nil instead of a string')
@@ -946,6 +948,8 @@ end
 --   applies only if *false_defaults* is `true`).
 -- @param false_defaults Optional flag indicating whether or not to return
 --   *default* if *value* is `false`. The default value is `false`.
+-- @usage expand('{{ false|default("no") }}') --> false
+-- @usage expand('{{ false|default("no", true) }') --> no
 -- @name filters.default
 function M.filters.default(value, default, false_defaults)
   if value == nil or false_defaults and not value then return default end
@@ -962,6 +966,8 @@ end
 --   case when sorting string values. The default value is `false`.
 -- @param by Optional string that specifies which of the key-value to sort by,
 --   either "key" or "value". The default value is `"key"`.
+-- @usage expand('{{ {b = 1, a = 2}|dictsort|string }}') --> {{"a", 2},
+--   {"b", 1}}
 -- @name filters.dictsort
 function M.filters.dictsort(t, case_sensitive, by)
   assert(t, 'input to filter "dictsort" was nil instead of a table')
@@ -984,6 +990,7 @@ end
 ---
 -- Returns an HTML-safe copy of string *s*.
 -- @param s String to ensure is HTML-safe.
+-- @usage expand([[{{ '<">&'|e}}]]) --> &lt;&#34;&gt;&amp;
 -- @name filters.escape
 function M.filters.escape(s)
   assert(s, 'input to filter "escape" was nil instead of a string')
@@ -996,6 +1003,7 @@ end
 ---
 -- Returns an HTML-safe copy of string *s*.
 -- @param s String to ensure is HTML-safe.
+-- @usage expand([[{{ '<">&'|escape}}]]) --> &lt;&#34;&gt;&amp;
 -- @name filters.e
 function M.filters.e(s)
   assert(s, 'input to filter "e" was nil instead of a string')
@@ -1008,6 +1016,7 @@ end
 -- @param bytes The number of bytes to return the size for.
 -- @param binary Flag indicating whether or not to report binary file size
 --    as opposed to decimal file size. The default value is `false`.
+-- @usage expand('{{ 1000|filesizeformat }}') --> 1.0 kB
 -- @name filters.filesizeformat
 function M.filters.filesizeformat(bytes, binary)
   assert(bytes, 'input to filter "filesizeformat" was nil instead of a number')
@@ -1033,6 +1042,7 @@ end
 ---
 -- Returns the first element in table *t*.
 -- @param t The table to get the first element of.
+-- @usage expand('{{ range(10)|first }}') --> 1
 -- @name filters.first
 function M.filters.first(t)
   assert(t, 'input to filter "first" was nil instead of a table')
@@ -1044,6 +1054,7 @@ end
 -- This filter only works in Lua 5.3, which has a distinction between floats and
 -- integers.
 -- @param value The value to interpret as a float.
+-- @usage expand('{{ 42|float }}') --> 42.0
 -- @name filters.float
 function M.filters.float(value)
   assert(value, 'input to filter "float" was nil instead of a number')
@@ -1054,6 +1065,8 @@ end
 -- Returns an HTML-safe copy of value *value*, even if *value* was returned by
 -- the "safe" filter.
 -- @param value Value to ensure is HTML-safe.
+-- @usage expand('{% set x = "<div />"|safe %}{{ x|forceescape }}') -->
+--   &lt;div /&gt;
 -- @name filters.forceescape
 function M.filters.forceescape(value)
   assert(value, 'input to filter "forceescape" was nil instead of a string')
@@ -1065,6 +1078,7 @@ end
 -- See Lua's `string.format()` for more information.
 -- @param s The string to format subsequent arguments according to.
 -- @param ... Arguments to format.
+-- @usage expand('{{ "%s,%s"|format("a", "b") }}') --> a,b
 -- @name filters.format
 function M.filters.format(s, ...)
   assert(s, 'input to filter "format" was nil instead of a string')
@@ -1109,6 +1123,7 @@ end
 -- @param width The number of spaces to indent lines with.
 -- @param first_line Optional flag indicating whether or not to indent the
 --   first line of text. The default value is `false`.
+-- @usage expand('{{ "foo\nbar"|indent(2) }}') --> "foo\n  bar"
 -- @name filters.indent
 function M.filters.indent(s, width, first_line)
   assert(s, 'input to filter "indent" was nil instead of a string')
@@ -1119,6 +1134,7 @@ end
 ---
 -- Returns value *value* as an integer.
 -- @param value The value to interpret as an integer.
+-- @usage expand('{{ 32.32|int }}') --> 32
 -- @name filters.int
 function M.filters.int(value)
   assert(value, 'input to filter "int" was nil instead of a number')
@@ -1133,6 +1149,7 @@ end
 -- @param attribute Optional attribute of elements to use for joining instead
 --   of the elements themselves. This may be nested (e.g. "foo.bar" joins
 --   `t[i].foo.bar` for all i).
+-- @usage expand('{{ {1, 2, 3}|join("|") }}') --> 1|2|3
 -- @name filters.join
 function M.filters.join(t, sep, attribute)
   assert(t, 'input to filter "join" was nil instead of a table')
@@ -1150,6 +1167,7 @@ end
 ---
 -- Returns the last element in table *t*.
 -- @param t The table to get the last element of.
+-- @usage expand('{{ range(10)|last }}') --> 10
 -- @name filters.last
 function M.filters.last(t)
   assert(t, 'input to filter "last" was nil instead of a table')
@@ -1159,6 +1177,7 @@ end
 ---
 -- Returns the length of string or table *value*.
 -- @param value The value to get the length of.
+-- @usage expand('{{ "hello world"|length }}') --> 11
 -- @name filters.length
 function M.filters.length(value)
   assert(value, 'input to filter "length" was nil instead of a table or string')
@@ -1172,6 +1191,7 @@ end
 -- @param generator Generator function that produces an item.
 -- @param s Initial state for the generator.
 -- @param i Initial iterator variable for the generator.
+-- @usage expand('{{ range(4)|batch(2)|list|string }}') --> {{1, 2}, {3, 4}}
 -- @see filters.batch
 -- @see filters.groupby
 -- @see filters.slice
@@ -1187,6 +1207,7 @@ end
 ---
 -- Returns a copy of string *s* with all lowercase characters.
 -- @param s The string to lowercase.
+-- @usage expand('{{ "FOO"|lower }}') --> foo
 -- @name filters.lower
 function M.filters.lower(s)
   assert(s, 'input to filter "lower" was nil instead of a string')
@@ -1199,6 +1220,7 @@ end
 -- @param t The table of elements to map.
 -- @param filter The name of the filter to pass table elements through.
 -- @param ... Any arguments for the filter.
+-- @usage expand('{{ {"1", "2", "3"}|map("int")|sum }}') --> 6
 -- @name filters.map
 function M.filters.map(t, filter, ...)
   assert(t, 'input to filter "map" was nil instead of a table')
@@ -1217,6 +1239,7 @@ end
 --   be nested (e.g. "foo.bar" maps t[i].foo.bar for all i).
 -- @param filter The name of the filter to pass table elements through.
 -- @param ... Any arguments for the filter.
+-- @usage expand('{{ users|mapattr("name")|join("|") }}')
 -- @name filters.mapattr
 function M.filters.mapattr(t, attribute, filter, ...)
   assert(t, 'input to filter "mapattr" was nil instead of a table')
@@ -1233,6 +1256,7 @@ end
 ---
 -- Returns a random element from table *t*.
 -- @param t The table to get a random element from.
+-- @usage expand('{{ range(100)|random }}')
 -- @name filters.random
 function M.filters.random(t)
   assert(t, 'input to filter "random" was nil instead of a table')
@@ -1245,6 +1269,7 @@ end
 -- @param t The table of elements to reject from.
 -- @param test The name of the test to use on table elements.
 -- @param ... Any arguments for the test.
+-- @usage expand('{{ range(5)|reject(is_odd)|join("|") }}') --> 2|4
 -- @name filters.reject
 function M.filters.reject(t, test, ...)
   assert(t, 'input to filter "reject" was nil instead of a table')
@@ -1262,6 +1287,7 @@ end
 --   may be nested (e.g. "foo.bar" tests t[i].foo.bar for all i).
 -- @param test The name of the test to use on table elements.
 -- @param ... Any arguments for the test.
+-- @usage expand('{{ users|rejectattr("offline")|mapattr("name")|join(",") }}')
 -- @name filters.rejectattr
 function M.filters.rejectattr(t, attribute, test, ...)
   assert(t, 'input to filter "rejectattr" was nil instead of a table')
@@ -1277,19 +1303,22 @@ end
 -- *old* replaced by string *new*.
 -- Identical to Lua's `string.gsub()` and handles Lua patterns.
 -- @param s The subject string.
--- @param old The string or Lua pattern to replace.
--- @param new The replacement text (may contain Lua captures).
+-- @param pattern The string or Lua pattern to replace.
+-- @param repl The replacement text (may contain Lua captures).
 -- @param n Optional number indicating the maximum number of replacements to
 --   make. The default value is `nil`, which is unlimited.
+-- @usage expand('{% filter upper|replace("FOO", "foo") %}foobar
+--   {% endfilter %}') --> fooBAR
 -- @name filters.replace
-function M.filters.replace(s, ...)
+function M.filters.replace(s, pattern, repl, n)
   assert(s, 'input to filter "replace" was nil instead of a string')
-  return string.gsub(s, ...)
+  return string.gsub(s, pattern, repl, n)
 end
 
 ---
 -- Returns a copy of the given string or table *value* in reverse order.
 -- @param value The value to reverse.
+-- @usage expand('{{ {1, 2, 3}|reverse|string }}') --> {3, 2, 1}
 -- @name filters.reverse
 function M.filters.reverse(value)
   assert(type(value) == 'table' or type(value) == 'string',
@@ -1310,6 +1339,7 @@ end
 --   `"floor"`. The default value is `nil`, which uses the common rounding
 --   method (if a number's fractional part is 0.5 or greater, rounds up;
 --   otherwise rounds down).
+-- @usage expand('{{ 2.1236|round(3, "floor") }}') --> 2.123
 -- @name filters.round
 function M.filters.round(value, precision, method)
   assert(value, 'input to filter "round" was nil instead of a number')
@@ -1328,6 +1358,8 @@ end
 -- This filter must be used at the end of a filter chain unless it is
 -- immediately proceeded by the "forceescape" filter.
 -- @param s The string to mark as HTML-safe.
+-- @usage lupa.configure{autoescape = true}
+-- @usage expand('{{ "<div>foo</div>"|safe }}') --> <div>foo</div>
 -- @name filters.safe
 function M.filters.safe(s)
   assert(s, 'input to filter "safe" was nil instead of a string')
@@ -1339,6 +1371,7 @@ end
 -- @param t The table of elements to select from.
 -- @param test The name of the test to use on table elements.
 -- @param ... Any arguments for the test.
+-- @usage expand('{{ range(5)|select(is_odd)|join("|") }}') --> 1|3|5
 -- @name filters.select
 function M.filters.select(t, test, ...)
   assert(t, 'input to filter "select" was nil instead of a table')
@@ -1356,6 +1389,7 @@ end
 --   may be nested (e.g. "foo.bar" tests t[i].foo.bar for all i).
 -- @param test The name of the test to use on table elements.
 -- @param ... Any arguments for the test.
+-- @usage expand('{{ users|selectattr("online")|mapattr("name")|join("|") }}')
 -- @name filters.selectattr
 function M.filters.selectattr(t, attribute, test, ...)
   assert(t, 'input to filter "selectattr" was nil instead of a table')
@@ -1406,6 +1440,7 @@ end
 --   case when sorting string values. The default value is `false`.
 -- @param attribute Optional attribute of elements to sort by instead of the
 --   elements themselves.
+-- @usage expand('{{ {2, 3, 1}|sort|string }}') --> {1, 2, 3}
 -- @name filters.sort
 function M.filters.sort(value, reverse, case_sensitive, attribute)
   assert(value, 'input to filter "sort" was nil instead of a table or string')
@@ -1443,6 +1478,7 @@ end
 ---
 -- Returns the string representation of value *value*, handling lists properly.
 -- @param value Value to return the string representation of.
+-- @usage expand('{{ {1 * 1, 2 * 2, 3 * 3}|string }}') --> {1, 4, 9}
 -- @name filters.string
 function M.filters.string(value)
   if type(value) ~= 'table' then return tostring(value) end
@@ -1458,6 +1494,7 @@ end
 -- Returns a copy of string *s* with any HTML tags stripped.
 -- Also cleans up whitespace.
 -- @param s String to strip HTML tags from.
+-- @usage expand('{{ "<div>foo</div>"|striptags }}') --> foo
 -- @name filters.striptags
 function M.filters.striptags(s)
   assert(s, 'input to filter "striptags" was nil instead of a string')
@@ -1471,6 +1508,7 @@ end
 -- @param attribute Optional attribute of elements to use for summing instead
 --   of the elements themselves. This may be nested (e.g. "foo.bar" sums
 --   `t[i].foo.bar` for all i).
+-- @usage expand('{{ range(6)|sum }}') --> 21
 -- @name filters.sum
 function M.filters.sum(t, attribute)
   assert(t, 'input to filter "sum" was nil instead of a table')
@@ -1483,6 +1521,7 @@ end
 ---
 -- Returns a copy of all words in string *s* in titlecase.
 -- @param s The string to titlecase.
+-- @usage expand('{{ "foo bar"|title }}') --> Foo Bar
 -- @name filters.title
 function M.filters.title(s)
   assert(s, 'input to filter "title" was nil instead of a string')
@@ -1498,6 +1537,7 @@ end
 -- @param partial_words Optional flag indicating whether or not to allow
 --   truncation within word boundaries. The default value is `false`.
 -- @param delimiter Optional delimiter text. The default value is '...'.
+-- @usage expand('{{ "foo bar"|truncate(4) }}') --> "foo ..."
 -- @name filters.truncate
 function M.filters.truncate(s, length, partial_words, delimiter)
   assert(s, 'input to filter "truncate" was nil instead of a string')
@@ -1512,6 +1552,7 @@ end
 ---
 -- Returns a copy of string *s* with all uppercase characters.
 -- @param s The string to uppercase.
+-- @usage expand('{{ "foo"|upper }}') --> FOO
 -- @name filters.upper
 function M.filters.upper(s)
   assert(s, 'input to filter "upper" was nil instead of a string')
@@ -1523,6 +1564,7 @@ end
 -- *value* may be a string, table of key-value query parameters, or table of
 -- lists of key-value query parameters (for order).
 -- @param value Value to URL-encode.
+-- @usage expand('{{ {{'f', 1}, {'z', 2}}|urlencode }}') --> f=1&z=2
 -- @name filters.urlencode
 function M.filters.urlencode(value)
   assert(value,
@@ -1555,6 +1597,8 @@ end
 --   The default value is `nil`, which imposes no limit.
 -- @param nofollow Optional flag indicating whether or not HTML links will get a
 --   "nofollow" attribute.
+-- @usage expand('{{ "example.com"|urlize }}') -->
+--   <a href="http://example.com">example.com</a>
 -- @name filters.urlize
 function M.filters.urlize(s, length, nofollow)
   assert(s, 'input to filter "urlize" was nil instead of a string')
@@ -1599,6 +1643,7 @@ end
 -- Returns the number of words in string *s*.
 -- A word is a sequence of non-space characters.
 -- @param s The string to count words in.
+-- @usage expand('{{ "foo bar baz"|wordcount }}') --> 3
 -- @name filters.wordcount
 function M.filters.wordcount(s)
   assert(s, 'input to filter "wordcount" was nil instead of a string')
@@ -1609,6 +1654,7 @@ end
 -- Interprets table *t* as a list of XML attribute-value pairs, returning them
 -- as a properly formatted, space-separated string.
 -- @param t The table of XML attribute-value pairs.
+-- @usage expand('<data {{ {foo = 42, bar = 23}|xmlattr }} />')
 -- @name filters.xmlattr
 function M.filters.xmlattr(t)
   assert(t, 'input to filter "xmlattr" was nil instead of a table')
@@ -1625,12 +1671,14 @@ end
 ---
 -- Returns whether or not number *n* is odd.
 -- @param n The number to test.
+-- @usage expand('{% for x in range(10) if is_odd(x) %}...{% endif %}')
 -- @name tests.is_odd
 function M.tests.is_odd(n) return n % 2 == 1 end
 
 ---
 -- Returns whether or not number *n* is even.
 -- @param n The number to test.
+-- @usage expand('{% for x in range(10) if is_even(x) %}...{% endif %}')
 -- @name tests.is_even
 function M.tests.is_even(n) return n % 2 == 0 end
 
@@ -1638,66 +1686,77 @@ function M.tests.is_even(n) return n % 2 == 0 end
 -- Returns whether or not number *n* is evenly divisible by number *num*.
 -- @param n The dividend to test.
 -- @param num The divisor to use.
+-- @usage expand('{% if is_divisibleby(x, y) %}...{% endif %}')
 -- @name tests.is_divisibleby
 function M.tests.is_divisibleby(n, num) return n % num == 0 end
 
 ---
 -- Returns whether or not value *value* is non-nil, and thus defined.
 -- @param value The value to test.
+-- @usage expand('{% if is_defined(x) %}...{% endif %}')
 -- @name tests.is_defined
 function M.tests.is_defined(value) return value ~= nil end
 
 ---
 -- Returns whether or not value *value* is nil, and thus effectively undefined.
 -- @param value The value to test.
+-- @usage expand('{% if is_undefined(x) %}...{% endif %}')
 -- @name tests.is_undefined
 function M.tests.is_undefined(value) return value == nil end
 
 ---
 -- Returns whether or not value *value* is nil.
 -- @param value The value to test.
+-- @usage expand('{% if is_none(x) %}...{% endif %}')
 -- @name tests.is_none
 function M.tests.is_none(value) return value == nil end
 
 ---
 -- Returns whether or not value *value* is nil.
 -- @param value The value to test.
+-- @usage expand('{% if is_nil(x) %}...{% endif %}')
 -- @name tests.is_nil
 function M.tests.is_nil(value) return value == nil end
 
 ---
 -- Returns whether or not string *s* is in all lower-case characters.
 -- @param s The string to test.
+-- @usage expand('{% if is_lower(s) %}...{% endif %}')
 -- @name tests.is_lower
 function M.tests.is_lower(s) return s:lower() == s end
 
 ---
 -- Returns whether or not string *s* is in all upper-case characters.
 -- @param s The string to test.
+-- @usage expand('{% if is_upper(s) %}...{% endif %}')
 -- @name tests.is_upper
 function M.tests.is_upper(s) return s:upper() == s end
 
 ---
 -- Returns whether or not value *value* is a string.
 -- @param value The value to test.
+-- @usage expand('{% if is_string(x) %}...{% endif %}')
 -- @name tests.is_string
 function M.tests.is_string(value) return type(value) == 'string' end
 
 ---
 -- Returns whether or not value *value* is a table.
 -- @param value The value to test.
+-- @usage expand('{% if is_mapping(x) %}...{% endif %}')
 -- @name tests.is_mapping
 function M.tests.is_mapping(value) return type(value) == 'table' end
 
 ---
 -- Returns whether or not value *value* is a table.
 -- @param value The value to test.
+-- @usage expand('{% if is_table(x) %}...{% endif %}')
 -- @name tests.is_table
 function M.tests.is_table(value) return type(value) == 'table' end
 
 ---
 -- Returns whether or not value *value* is a number.
 -- @param value The value to test.
+-- @usage expand('{% if is_number(x) %}...{% endif %}')
 -- @name tests.is_number
 function M.tests.is_number(value) return type(value) == 'number' end
 
@@ -1705,6 +1764,7 @@ function M.tests.is_number(value) return type(value) == 'number' end
 -- Returns whether or not value *value* is a sequence, namely a table with
 -- non-zero length.
 -- @param value The value to test.
+-- @usage expand('{% if is_sequence(x) %}...{% endif %}')
 -- @name tests.is_sequence
 function M.tests.is_sequence(value)
   return type(value) == 'table' and #value > 0
@@ -1715,6 +1775,7 @@ end
 -- length) or a generator.
 -- At the moment, all functions are considered generators.
 -- @param value The value to test.
+-- @usage expand('{% if is_iterable(x) %}...{% endif %}')
 -- @name tests.is_iterable
 function M.tests.is_iterable(value)
   return M.tests.is_sequence(value) or type(value) == 'function'
@@ -1723,6 +1784,7 @@ end
 ---
 -- Returns whether or not value *value* is a function.
 -- @param value The value to test.
+-- @usage expand('{% if is_callable(x) %}...{% endif %}')
 -- @name tests.is_callable
 function M.tests.is_callable(value) return type(value) == 'function' end
 
@@ -1730,12 +1792,14 @@ function M.tests.is_callable(value) return type(value) == 'function' end
 -- Returns whether or not value *value* is the same as value *other*.
 -- @param value The value to test.
 -- @param other The value to compare with.
+-- @usage expand('{% if is_sameas(x, y) %}...{% endif %}')
 -- @name tests.is_sameas
 function M.tests.is_sameas(value, other) return value == other end
 
 ---
 -- Returns whether or not value *value* is HTML-safe.
 -- @param value The value to test.
+-- @usage expand('{% if is_escaped(x) %}...{% endif %}')
 -- @name tests.is_escaped
 function M.tests.is_escaped(value)
   return getmetatable(value) and getmetatable(value).__tostring ~= nil
