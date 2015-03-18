@@ -1,11 +1,13 @@
-# Introduction
+# Lupa
+
+## Introduction
 
 Lupa is a [Jinja2][] template engine implementation written in Lua and supports
 Lua syntax within tags and variables.
 
 [Jinja2]: http://jinja.pocoo.org
 
-# Requirements
+## Requirements
 
 Lupa has the following requirements:
 
@@ -15,7 +17,7 @@ Lupa has the following requirements:
 [Lua]: http://www.lua.org
 [LPeg]: http://www.inf.puc-rio.br/~roberto/lpeg/
 
-# Installation
+## Installation
 
 Unzip Lupa and place the "lupa.lua" file in your Lua installation's
 `package.path`. This location depends on your version of Lua. Typical locations
@@ -31,7 +33,7 @@ You can also place the "lupa.lua" file wherever you'd like and add it to Lua's
 
     package.path = package.path..';/home/user/lua/?.lua'
 
-# Usage
+## Usage
 
 Lupa is simply a Lua library. Its `lupa.expand()` and `lupa.expand_file()`
 functions may called to process templates. For example:
@@ -47,11 +49,18 @@ can be changed by reconfiguring Lupa:
     lupa.configure{loader = lupa.loaders.filesystem('path/to/templates')}
     lupa.expand_file('name') --> expands template "path/to/templates/name"
 
-# Syntax
+See Lupa's [API documentation][] for more information.
 
-TODO:
+[API documentation]: api.html
 
-# Comparison with Jinja2
+## Syntax
+
+Please refer to Jinja2's extensive [template documentation][]. Any
+incompatibilities are listed in the sections below.
+
+[template documentation]: http://jinja.pocoo.org/docs/dev/templates/
+
+## Comparison with Jinja2
 
 While Lua and Python (Jinja2's implementation language) share some similarities,
 the languages themselves are fundamentally different. Nevertheless, a
@@ -60,11 +69,11 @@ syntax. As a result, Lupa passes Jinja2's test suite with only a handful of
 modifications. The comprehensive list of differences between Lupa and Jinja2 is
 described in the following sections.
 
-## Fundamental Differences
+### Fundamental Differences
 
 * Expressions use Lua's syntax instead of Python's, so many of Python's
-  syntactic constructs are not valid. However, the following constructs *are*
-  valid, despite being invalid in pure Lua:
+  syntactic constructs are not valid. However, the following constructs
+  *are valid*, despite being invalid in pure Lua:
 
   + Iterating over table literals or table variables directly in a "for" loop:
 
@@ -84,7 +93,7 @@ described in the following sections.
 
 * Strings do not have unicode escapes nor is unicode interpreted in any way.
 
-## Syntactic Differences
+### Syntactic Differences
 
 * Line statements are not supported due to parsing complexity.
 * In `{% for ... %}` loops, the `loop.length`, `loop.revindex`,
@@ -125,7 +134,7 @@ described in the following sections.
   tags, and `{% autoescape %}` and `{% endautoescape %}` tags are not supported
   since they are outside the scope of this implementation.
 
-## Filter Differences
+### Filter Differences
 
 * Only the `batch`, `groupby`, and `slice` filters return generators which
   produce one item at a time when looping. All other filters that produce
@@ -135,13 +144,13 @@ described in the following sections.
 * The `safe` filter must appear at the end of a filter chain since its output
   cannot be passed to any other filter.
 
-## Function Differences
+### Function Differences
 
 * The global `range(n)` function returns a sequence from 1 to `n`, inclusive,
   since lists start at 1 in Lua.
 * No `lipsum()`, `dict()`, or `joiner()` functions for the sake of simplicity.
 
-## API Differences
+### API Differences
 
 * Lupa has a much simpler API consisting of just four functions and three
   fields:
@@ -157,4 +166,5 @@ described in the following sections.
 * There is no bytecode caching.
 * Lupa has no extension mechanism. Instead, modify `lupa.env`, `lupa.filters`,
   and `lupa.tests` directly. However, the parser cannot be extended.
-* Sandboxing is not supported, although `lupa.env` is safe by default.
+* Sandboxing is not supported, although `lupa.env` is safe by default (`io`,
+  `os.execute`, `os.remove`, etc. are not available).
