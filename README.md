@@ -17,6 +17,12 @@ Lupa has the following requirements:
 [Lua]: http://www.lua.org
 [LPeg]: http://www.inf.puc-rio.br/~roberto/lpeg/
 
+## Download
+
+Download Lupa from the project’s [download page][].
+
+[download page]: download
+
 ## Installation
 
 Unzip Lupa and place the "lupa.lua" file in your Lua installation's
