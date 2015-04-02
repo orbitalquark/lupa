@@ -1,4 +1,6 @@
 -- Copyright 2015 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Sponsored by the Library of the University of Antwerp.
+-- Contributions from Ana Balan.
 -- Lupa templating engine.
 
 --[[ This comment is for LuaDoc.

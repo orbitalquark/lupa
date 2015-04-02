@@ -1,4 +1,5 @@
 -- Copyright 2015 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Contributions from Ana Balan.
 -- Contains Lupa's copy of Jinja2's test suite.
 -- Any descrepancies are noted and/or described.
 -- Note: Lupa's range(n) behaves differently than Jinja2's in that it produces
