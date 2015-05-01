@@ -331,7 +331,6 @@ end
 -- @param expression The string expression to evaluate.
 -- @param env The environment to evaluate the expression in.
 local function eval(expression, env)
---  return load('return '..expression, nil, nil, env)()
   local expr, pos, filters = expression:match('^([^|]*)|?()(.-)$')
   -- Evaluate base expression.
   local f = env_assert(env, load('return '..expr, nil, nil, env))
@@ -547,7 +546,7 @@ local function evaluate(ast, env)
       for pos, filter in each_filter(block.expression) do
         env._LUPAPOSITION = p + pos - 1 -- update position for error messages
         local name, params = filter:match('^%s*([%w_]+)%(?(.-)%)?%s*$')
-        f = M.filters[name]
+        local f = M.filters[name]
         env_assert(env, f, 'unknown filter "'..name..'"')
         local args = env_assert(env, load('return {'..params..'}'),
                                 'invalid filter parameter(s) for "'..name..
@@ -1609,11 +1608,9 @@ function M.filters.urlize(s, length, nofollow)
     return length and s:sub(1, length)..(#s > length and '...' or '') or url
   end
   local nofollow_attr = nofollow and ' rel="nofollow"' or ''
-  local lpeg = require('lpeg')
-  local P, S, C, Cs = lpeg.P, lpeg.S, lpeg.C, lpeg.Cs
   local lead, trail = C((S('(<') + '&lt;')^0), C((S('.,)>\n') + '&gt;')^0) * -1
   local middle = C((1 - trail)^0)
-  local patt = Cs(lead * middle * trail / function(lead, middle, trail)
+  local patt = lpeg.Cs(lead * middle * trail / function(lead, middle, trail)
     local linked
     if middle:find('^www%.') or (not middle:find('@') and
                                  not middle:find('^https?://') and
