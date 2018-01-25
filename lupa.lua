@@ -1,4 +1,4 @@
--- Copyright 2015-2017 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2015-2018 Mitchell mitchell.att.foicica.com. See LICENSE.
 -- Sponsored by the Library of the University of Antwerp.
 -- Contributions from Ana Balan.
 -- Lupa templating engine.
@@ -257,10 +257,10 @@ function M.configure(ts, te, vs, ve, cs, ce, options)
             V('block_block') + V('extends_tag') + V('for_block') +
             V('if_block') + V('macro_block') + V('call_block') +
             V('filter_block') + V('set_tag') + V('include_tag') +
-            V('import_tag') + V('do_tag'))^1,
+            V('import_tag') + V('do_tag'))^0,
 
     -- Main pattern.
-    V('body')^-1 * (-1 + tag_start * tag_error + main_error),
+    V('body') * (-1 + tag_start * tag_error + main_error),
   })
 
   -- Other options.
