@@ -1,4 +1,4 @@
--- Copyright 2015-2019 Mitchell mitchell.att.foicica.com. See LICENSE.
+-- Copyright 2015-2020 Mitchell mitchell.att.foicica.com. See LICENSE.
 -- Sponsored by the Library of the University of Antwerp.
 -- Contributions from Ana Balan.
 -- Lupa templating engine.
