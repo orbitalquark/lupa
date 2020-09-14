@@ -1,4 +1,5 @@
-# Lupa
+{% raw %}
+## Introduction
 
 Lupa is a [Jinja2][] template engine implementation written in Lua and supports
 Lua syntax within tags and variables.
@@ -58,7 +59,7 @@ can be changed by reconfiguring Lupa:
 
 See Lupa's [API documentation][] for more information.
 
-[API documentation]: https://orbitalquark.github.io/lupa/api.html
+[API documentation]: api.html
 
 ## Syntax
 
@@ -175,3 +176,4 @@ described in the following sections.
   and `lupa.tests` directly. However, the parser cannot be extended.
 * Sandboxing is not supported, although `lupa.env` is safe by default (`io`,
   `os.execute`, `os.remove`, etc. are not available).
+{% endraw %}

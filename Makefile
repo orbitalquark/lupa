@@ -3,34 +3,20 @@
 # Run test suite.
 
 .PHONY: tests
-tests:
-	cd tests && lua suite.lua
+tests: ; cd tests && lua5.1 suite.lua
 
 # Documentation.
 
-doc: manual luadoc
-manual: *.md | doc/bombay
-	$| -d doc -t doc --title Lupa $^
-luadoc: lupa.lua
-	luadoc -d doc -t doc --doclet doc/markdowndoc $^
-cleandoc: ; rm -rf doc/README.html doc/api.html
-
-# Release.
-
-basedir = lupa_$(shell grep '^\#\#' CHANGELOG.md | head -1 | cut -d ' ' -f 2)
-
-$(basedir): ; hg archive $@ -X ".hg*"
-release: $(basedir)
-	make doc
-	cp -r doc $<
-	zip -r /tmp/$<.zip $< && rm -r $<
-
-# External dependencies.
-
-bombay_zip = bombay.zip
-
-$(bombay_zip):
-	wget "http://foicica.com/hg/bombay/archive/tip.zip" && mv tip.zip $@
-doc/bombay: | $(bombay_zip)
-	mkdir $(notdir $@) && unzip -d $(notdir $@) $| && \
-		mv $(notdir $@)/*/* $(dir $@)
+docs: docs/index.md docs/api.md $(wildcard docs/*.md) | \
+      docs/_layouts/default.html
+	for file in $(basename $^); do \
+		cat $| | docs/fill_layout.lua $$file.md > $$file.html; \
+	done
+docs/index.md: README.md
+	sed 's/^\# [[:alpha:]]\+/## Introduction/;' $< > $@
+	sed -i 's|https://[[:alpha:]]\+\.github\.io/[[:alpha:]]\+/||;' $@
+	sed -i '1 i {% raw %}' $@ && echo "{% endraw %}" >> $@
+docs/api.md: lupa.lua
+	luadoc --doclet docs/markdowndoc $^ > $@
+	sed -i '1 i {% raw %}' $@ && echo "{% endraw %}" >> $@
+cleandocs: ; rm -f docs/*.html docs/index.md docs/api.html
