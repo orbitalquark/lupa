@@ -458,14 +458,17 @@ local function evaluate(ast, env)
         chunks[#chunks + 1] = evaluate(block, env)
       else
         local elseifs = block['elseif']
+        local elseif_was_true = false
         if elseifs then
           for j = 1, #elseifs do
             if eval(elseifs[j].expression, env) then
               chunks[#chunks + 1] = evaluate(elseifs[j], env)
+              elseif_was_true = true
               break
             end
           end
-        elseif block['else'] then
+        end
+        if not elseif_was_true and block['else'] then
           chunks[#chunks + 1] = evaluate(block['else'], env)
         end
       end

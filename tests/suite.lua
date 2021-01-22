@@ -254,6 +254,14 @@ local test_suite = {
         local tmpl = '{% if false %}XXX{% else %}...{% endif %}'
         assert_equal(expand(tmpl), '...')
       end,
+      test_elseif_else = function()
+        local tmpl = '{% if false %}XXX{% elseif false %}YYY{% else %}...{% endif %}'
+        assert_equal(expand(tmpl), '...')
+      end,
+      test_elseif_noelse = function()
+        local tmpl = '{% if false %}XXX{% elseif true %}...{% else %}YYY{% endif %}'
+        assert_equal(expand(tmpl), '...')
+      end,
       test_empty = function()
         local tmpl = '[{% if true %}{% else %}{% endif %}]'
         assert_equal(expand(tmpl), '[]')
