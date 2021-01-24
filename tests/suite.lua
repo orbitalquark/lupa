@@ -270,6 +270,13 @@ local test_suite = {
         assert_equal(expand(tmpl, env), '1')
         tmpl = '{% if true %}{% set foo = 1 %}{% endif %}{{ foo }}'
         assert_equal(expand(tmpl), '1')
+      end,
+      -- Note: this test does not exist in Jinja2's suite, but is needed for
+      -- completeness.
+      test_elif_else = function()
+        local tmpl = '{% if false %}XXX{% elseif false %}XXX{% else'..
+                     '%}...{% endif %}'
+        assert_equal(expand(tmpl), '...')
       end
     },
     macro_tests = {
